@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2');
+const nodemailer = require('nodemailer');
 
 const app = express();
 
@@ -23,9 +24,36 @@ connection.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
-app.post('/submit', (req, res) => {
+app.post('/submit',async (req, res) => {
   const formData = req.body;
   const brandsString = formData.q5.join(', ');
+  const email = formData.email;
+  const name = formData.name;
+  const consent = formData.emailConsent;
+
+  const fs = require('fs');
+  const emailTemplate = fs.readFileSync('emailTemplate.html', 'utf8');
+
+  if(consent){
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth:{
+        user: "ayush2571@gmail.com",
+        pass: "ajlw zrzm hmag ahes"
+      }
+    });
+
+    const mail_configs = {
+      from: "ayush2571@gmail.com",
+      to : email,
+      subject : "Survey Response",
+      html: emailTemplate
+      
+    }
+    
+    await transporter.sendMail(mail_configs);
+    console.log("email sent ");
+  }
 
   const query = `
     INSERT INTO userinfo (name, email, q1, q2, q3, q4, q4Other, q5, q6, q7, q8, q9, emailConsent, analysisConsent)

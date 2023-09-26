@@ -41,9 +41,9 @@ const QuestionCards = () => {
     try {
       // Send the form data to the backend using axios
       const response = await axios.post("http://localhost:5000/submit", inputs);
-      console.log("Form data submitted successfully", response.data);
+      alert("Form data submitted successfully", response.data);
     } catch (error) {
-      console.error("Error submitting form data:", error);
+      alert("Error submitting form data:", error);
     }
   };
 
@@ -51,7 +51,7 @@ const QuestionCards = () => {
     <form onSubmit={handleSubmit}>
       <div className="cards">
         <div className="questionholder">
-          <label className="question">Name:</label>{" "}
+          <label className="question" style={{fontWeight: 500}}>Name:</label>{" "}
           &emsp;&emsp;&emsp;&emsp;&ensp;
           <input
             type="text"
@@ -60,7 +60,7 @@ const QuestionCards = () => {
             value={inputs.name || ""}
             onChange={handleChange}
           />
-          <label className="question">Email Address:</label>&emsp;
+          <label className="question" style={{fontWeight: 500}}>Email Address:</label>&emsp;
           <input
             type="email"
             name="email"
@@ -75,6 +75,7 @@ const QuestionCards = () => {
           <p className="question">Age:</p>
           <select name="q1" value={inputs.q1} onChange={handleChange}>
             <option value="">Select an option</option>
+            <option value = "<18" >below 18</option>
             <option value="18-30">18-30</option>
             <option value="31-50">31-50</option>
             <option value="51+">51+</option>
