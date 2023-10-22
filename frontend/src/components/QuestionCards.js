@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import CustomNumberInput from './CustomNumberInput';
 const QuestionCards = () => {
   const [inputs, setInputs] = useState({
     name: "",
@@ -29,7 +30,8 @@ const QuestionCards = () => {
             } else {
                 setInputs((values) => ({ ...values, q5: values.q5.filter(brand => brand !== value) }));
             }
-        } else {
+        }
+        else {
             setInputs((values) => ({ ...values, [name]: value }));
         }
   };
@@ -37,6 +39,12 @@ const QuestionCards = () => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     //console.log(inputs);
+    // Check if the age is less than 18
+    if (inputs.q1 !== "" && parseInt(inputs.q1) < 18) {
+      alert("You must be 18 years or older to take this survey.");
+      return; // Prevent the form submission
+    }
+
 
     try {
       // Send the form data to the backend using axios
@@ -73,13 +81,27 @@ const QuestionCards = () => {
       <div className="cards">
         <div className="questionholder">
           <p className="question">Age:</p>
+          <CustomNumberInput
+            label="Age"
+            name="q1"
+            value={inputs.q1}
+            onChange={handleChange}
+          />
+          {/* <input
+            type="text"
+            name="q1"
+            placeholder="Enter your Age"
+            value={inputs.q1 || ""}
+            onChange={handleChange}
+          />
           <select name="q1" value={inputs.q1} onChange={handleChange}>
             <option value="">Select an option</option>
             <option value = "<18" >below 18</option>
             <option value="18-30">18-30</option>
             <option value="31-50">31-50</option>
             <option value="51+">51+</option>
-          </select>
+          </select> */}
+          
         </div>
       </div>
       <div className="cards">
@@ -95,14 +117,24 @@ const QuestionCards = () => {
       </div>
       <div className="cards">
         <div className="questionholder">
-          <p className="question">Place(city):</p>
-          <input
+          <p className="question">Location:</p>
+          {/* <input
             type="text"
             name="q3"
             placeholder="Enter your city name"
             value={inputs.q3 || ""}
             onChange={handleChange}
-          />
+          /> */}
+          <select name="q3" value={inputs.q3} onChange={handleChange}>
+              <option value="">Select an option</option>
+              <option value="Hebbal">Hebbal</option>
+              <option value="Hennur Road">Hennur Road</option>
+              <option value="Jakkur">Jakkur</option>
+              <option value="Thanisandra">Thanisandra</option>
+              <option value="Yelahanka">Yelahanka</option>
+              <option value="Horamavu">Horamavu</option>
+              <option value="Other">Other</option>
+          </select>
         </div>
       </div>
       <div className="cards">
@@ -336,7 +368,7 @@ const QuestionCards = () => {
       </div>
       <div className="cards">
         <div className="questionholder">
-          <p className="question">Do you have a specific product name in mind?</p>
+          <p className="question">Do you have an immediate choice of product?</p>
           <input
             type="text"
             name="q9"
